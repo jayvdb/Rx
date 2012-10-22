@@ -39,10 +39,11 @@ Here is a little example of how to validate your json against a rx schema::
         """Test generate spore schema."""
         def test_spore(self):
             rx = Rx.Factory({ "register_core_types": True })
-            spore_json_schema = json.loads(open('spore_validation.rx').read())
-            spore_schema = rx.make_schema(spore_json_schema)
-            resp = requets.get('http://localhost:8000/spore', headers={'Content-Type': 'application/json'})
-            self.assertTrue(spore_schema.check(resp.json))
+			with open('spore_validation.rx') as f:
+                spore_json_schema = json.loads(f.read())
+                spore_schema = rx.make_schema(spore_json_schema)
+                resp = requests.get('http://localhost:8000/spore', headers={'Content-Type': 'application/json'})
+                self.assertTrue(spore_schema.check(resp.json))
 
 Or even quicker::
 
