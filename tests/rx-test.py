@@ -1,5 +1,5 @@
 from TAP.Simple import *
-import Rx
+from rxjson import Rx
 import json
 import re
 

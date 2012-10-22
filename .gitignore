@@ -1,9 +1,4 @@
-www/out
-js.jar
-cover_db
-php/Test.php
-python/*.pyc
-perl/spec
-perl/.build
-perl/Data-Rx-*
 *~
+*.pyc
+d2to1*/
+*.egg-info/
