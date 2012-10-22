@@ -70,5 +70,5 @@ Or even quicker::
     >>> spore_schema.check(js)
     True
 
-* `spore_validation.rx` is part of https://github.com/SPORE/specifications
-* `daybed` is a form model validation API: https://github.com/spiral-project/daybed
+* ``spore_validation.rx`` is part of https://github.com/SPORE/specifications
+* ``daybed`` is a form model validation API: https://github.com/spiral-project/daybed
