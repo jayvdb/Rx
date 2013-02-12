@@ -9,7 +9,7 @@ rx = Rx.Factory({ "register_core_types": True });
 
 isa_ok(rx, Rx.Factory)
 
-index = json.loads(file('spec/index.json').read())
+index = json.loads(open('spec/index.json').read())
 
 test_data     = {}
 test_schemata = {}
@@ -23,16 +23,16 @@ def normalize(entries, test_data):
     for n in entries: new_entries[n] = None
     entries = new_entries
 
-  if len(entries) == 1 and entries.has_key('*'):
+  if len(entries) == 1 and '*' in entries:
     value = entries["*"]
     entries = { }
-    for k in test_data.keys(): entries[k] = value
+    for k in list(test_data.keys()): entries[k] = value
 
   return entries
 
 for filename in index:
   if filename == 'spec/index.json': continue
-  payload = json.loads(file(filename).read())
+  payload = json.loads(open(filename).read())
 
   parts = filename.split('/')
   parts.pop(0)
@@ -53,13 +53,13 @@ for filename in index:
         test_data[ leaf_name ][ data_str ] = boxed_data[0]
 
     else:
-      for entry in payload.keys():
+      for entry in list(payload.keys()):
         boxed_data = json.loads("[ %s ]" % payload[entry])
         test_data[ leaf_name ][ entry ] = boxed_data[0]
   else:
-    raise StandardError("weird file in data dir: %s" % filename)
+    raise Exception("weird file in data dir: %s" % filename)
 
-schema_names = test_schemata.keys()
+schema_names = list(test_schemata.keys())
 schema_names.sort()
 
 for schema_name in schema_names:
@@ -71,7 +71,7 @@ for schema_name in schema_names:
     try:
       rx.learn_type(schema_test_spec['composedtype']['uri'],
                     schema_test_spec['composedtype']['schema'])
-    except Rx.Error, e:
+    except Rx.Error as e:
       if schema_test_spec['composedtype'].get("invalid", False):
         ok(1, "BAD COMPOSED TYPE: schemata %s" % schema_name)
         continue
@@ -87,7 +87,7 @@ for schema_name in schema_names:
 
   try:
     schema = rx.make_schema(schema_test_spec["schema"])
-  except Rx.Error, e:
+  except Rx.Error as e:
     if schema_test_spec.get("invalid", False):
       ok(1, "BAD SCHEMA: schemata %s" % schema_name)
       continue
@@ -98,7 +98,7 @@ for schema_name in schema_names:
     ok(0, "BAD SCHEMA: schemata %s" % schema_name)
     continue
 
-  if not schema: raise StandardError("got no schema obj for valid input")
+  if not schema: raise Exception("got no schema obj for valid input")
 
   for pf in [ 'pass', 'fail' ]:
     for source in schema_test_spec.get(pf, []):
