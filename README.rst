@@ -26,6 +26,10 @@ against a standardized json schema directly in your python app.
 
 It is a packaged version of http://rx.codesimply.com/
 
+.. image:: https://secure.travis-ci.org/spiral-project/rxjson.png?branch=master
+   :target: http://travis-ci.org/spiral-project/rxjson/
+   :alt: Travis-ci: continuous integration status.
+
 Usage
 =====
 
