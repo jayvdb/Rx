@@ -33,7 +33,9 @@ It is a packaged version of http://rx.codesimply.com/
 Usage
 =====
 
-Here is a little example of how to validate your json against a rx schema::
+Here is a little example of how to validate your json against a rx schema:
+
+.. code-block:: python
 
     import requests
     from rxjson import Rx
@@ -49,7 +51,9 @@ Here is a little example of how to validate your json against a rx schema::
                 resp = requests.get('http://localhost:8000/spore', headers={'Content-Type': 'application/json'})
                 self.assertTrue(spore_schema.check(resp.json))
 
-Or even quicker::
+Or even quicker:
+
+.. code-block:: python
 
     >>> import json
     >>> from rxjson import Rx
