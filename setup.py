@@ -10,7 +10,7 @@ with open(os.path.join(here, 'README.rst')) as f:
 
 
 setup(name='rxjson',
-      version='0.3dev',
+      version='0.3',
       description='JSON RX Schema validation tool',
       long_description=README,
       license='GPLv2.0',
