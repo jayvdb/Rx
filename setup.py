@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import os
 from setuptools import setup, find_packages
 
@@ -18,7 +20,8 @@ setup(name='rxjson',
           "Programming Language :: Python :: 3",
           "Intended Audience :: Developers",
           "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-          "License :: OSI Approved :: GNU General Public License v2 (GPLv2)", ],
+          "License :: OSI Approved :: GNU General Public License v2 (GPLv2)"
+      ],
       author='Ricardo Signes',
       author_email='rjbs@cpan.org',
       maintainer='Rémy Hubscher',
