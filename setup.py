@@ -1,9 +1,30 @@
-#!/usr/bin/env python
-from setuptools import setup
+import os
+from setuptools import setup, find_packages
 
-setup(setup_requires=['d2to1'],
-      d2to1=True,
+here = os.path.abspath(os.path.dirname(__file__))
 
-      # This ensures that the MANIFEST.in is read, but it
-      # will become the default in distutils2.
-      include_package_data=True,)
+with open(os.path.join(here, 'README.rst')) as f:
+    README = f.read()
+
+
+setup(name='rxjson',
+      version='0.3dev',
+      description='JSON RX Schema validation tool',
+      long_description=README,
+      license='GPLv2.0',
+      classifiers=[
+          "Development Status :: 5 - Production/Stable",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3",
+          "Intended Audience :: Developers",
+          "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+          "License :: OSI Approved :: GNU General Public License v2 (GPLv2)", ],
+      author='Ricardo Signes',
+      author_email='rjbs@cpan.org',
+      maintainer='Rémy Hubscher',
+      maintainer_email='hubscher.remy@gmail.com',
+      url='https://github.com/spiral-project/rxjson',
+      keywords='json schema validation rx rxjson',
+      packages=find_packages(),
+      include_package_data=True,
+      zip_safe=False)

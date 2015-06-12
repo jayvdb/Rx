@@ -4,6 +4,7 @@ python:
     - "2.7"
     - "3.2"
     - "3.3"
+    - "3.4"
     - "pypy"
 install: pip install --use-mirrors .
 before_script: pip install --use-mirrors nose git+https://github.com/rjbs/pytap.git@48060b13351979c54cf482629ee41cdeafa4933f
