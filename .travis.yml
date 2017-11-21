@@ -6,6 +6,7 @@ python:
     - "3.3"
     - "3.4"
     - "pypy"
-install: pip install --use-mirrors .
-before_script: pip install --use-mirrors nose git+https://github.com/rjbs/pytap.git@48060b13351979c54cf482629ee41cdeafa4933f
+install:
+  - pip install .
+  - pip install git+https://github.com/rjbs/tapsimple
 script: ( cd tests && python rx-test.py )
