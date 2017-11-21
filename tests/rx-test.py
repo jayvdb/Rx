@@ -1,10 +1,11 @@
 from TAP.Simple import *
-from rxjson import Rx
+import Rx
 import json
 import re
+import pdb
+import os
 
 plan(None)
-
 rx = Rx.Factory({ "register_core_types": True });
 
 isa_ok(rx, Rx.Factory)
@@ -26,7 +27,7 @@ def normalize(entries, test_data):
   if len(entries) == 1 and '*' in entries:
     value = entries["*"]
     entries = { }
-    for k in list(test_data.keys()): entries[k] = value
+    for k in test_data.keys(): entries[k] = value
 
   return entries
 
@@ -53,14 +54,13 @@ for filename in index:
         test_data[ leaf_name ][ data_str ] = boxed_data[0]
 
     else:
-      for entry in list(payload.keys()):
+      for entry in payload.keys():
         boxed_data = json.loads("[ %s ]" % payload[entry])
         test_data[ leaf_name ][ entry ] = boxed_data[0]
   else:
-    raise Exception("weird file in data dir: %s" % filename)
+    raise StandardError("weird file in data dir: %s" % filename)
 
-schema_names = list(test_schemata.keys())
-schema_names.sort()
+schema_names = list(sorted(test_schemata.keys()))
 
 for schema_name in schema_names:
   rx = Rx.Factory({ "register_core_types": True });
@@ -71,7 +71,7 @@ for schema_name in schema_names:
     try:
       rx.learn_type(schema_test_spec['composedtype']['uri'],
                     schema_test_spec['composedtype']['schema'])
-    except Rx.Error as e:
+    except Rx.SchemaError as e:
       if schema_test_spec['composedtype'].get("invalid", False):
         ok(1, "BAD COMPOSED TYPE: schemata %s" % schema_name)
         continue
@@ -87,7 +87,8 @@ for schema_name in schema_names:
 
   try:
     schema = rx.make_schema(schema_test_spec["schema"])
-  except Rx.Error as e:
+  except Rx.SchemaError as e:
+    #pdb.set_trace()
     if schema_test_spec.get("invalid", False):
       ok(1, "BAD SCHEMA: schemata %s" % schema_name)
       continue
@@ -98,7 +99,7 @@ for schema_name in schema_names:
     ok(0, "BAD SCHEMA: schemata %s" % schema_name)
     continue
 
-  if not schema: raise Exception("got no schema obj for valid input")
+  if not schema: raise StandardError("got no schema obj for valid input")
 
   for pf in [ 'pass', 'fail' ]:
     for source in schema_test_spec.get(pf, []):
@@ -108,11 +109,22 @@ for schema_name in schema_names:
       # if to_test == '*': to_test = test_data[ source ].keys()
 
       for entry in to_test:
-        result = schema.check( test_data[source][entry] )
+        result = None
+        try:
+          schema.validate(test_data[source][entry])
+          result = True
+        except Rx.SchemaMismatch as e:
+          result = False
 
         desc = "%s/%s against %s" % (source, entry, schema_name)
 
         if pf == 'pass':
           ok(result, "VALID  : %s" % desc)
+          #if not result:
+          #  pdb.set_trace()
+          #  result = schema.check( test_data[source][entry] )
         else:
-          ok(not(result), "INVALID: %s" % desc)
+          ok(not result, "INVALID: %s" % desc)
+          #if result:
+          #  pdb.set_trace()
+          #  result = schema.check( test_data[source][entry] )
